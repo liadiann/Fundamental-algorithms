@@ -4,18 +4,18 @@
 
 void usage() {
     printf("Usage: ./a.out positive_integer -flag(or /flag)\n");
-    printf("Flag: h, p, s, e, a, f");
+    printf("Flag: h, p, s, e, a, f\n");
 }
 
-void pow(int a) {
-    unsigned long long m;
+void pow(int a, unsigned long long m) {
     for (int i = 2; i <= 10; i++) {
-        m = i;
-        for (int j = 1; j <= a; j++) {
-            m = m * i;
-            printf("%d ", m);
+        m = m * i;
+        printf("%d ", m);
+        if (a > 1) {
+            a--;
+            pow(a, m);
         }
-    printf("\n");
+        printf("\n");
     }
 }
 
@@ -91,16 +91,24 @@ int main(int argc, char** argv)
             printf("Число должно быть не больше 10\n");
         }else{
             printf("1\n");
-
+            pow(n, 1);
         }
         break;
     case 5:
-
+        unsigned long long sum = 0;
+        for (int i = 1; i <= n; i++) {
+            sum = sum + i;
+        }
+        printf("sum = %d\n", sum);
         break;
     case 6:
-
+        unsigned long long f = 1;
+        for (int i = 1; i <= n; i++) {
+            f = f * i;
+        }
+        printf("factorial = %d\n", f);
         break;
     
     }
-    
+    return 0;
 }
