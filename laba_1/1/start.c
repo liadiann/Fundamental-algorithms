@@ -8,8 +8,14 @@ void usage() {
 }
 
 void pow(int a) {
-    for (int i = 2; i <= a; i++) {
-
+    unsigned long long m;
+    for (int i = 2; i <= 10; i++) {
+        m = i;
+        for (int j = 1; j <= a; j++) {
+            m = m * i;
+            printf("%d ", m);
+        }
+    printf("\n");
     }
 }
 
