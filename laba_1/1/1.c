@@ -1,25 +1,35 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 void usage() {
-    printf("Usage: ./a.out positive_integer -flag(or /flag)\n");
+    printf("Usage: program positive_integer -flag(or /flag)\n");
     printf("Flag: h, p, s, e, a, f\n");
 }
 
-void pow(int a, unsigned long long m) {
-    for (int i = 2; i <= 10; i++) {
+void Pow(unsigned int a, unsigned int b, int q, unsigned long long m, int count) {
+    
+    for (int i = q; i <= 10; i++) {
         m = m * i;
-        printf("%d ", m);
+        printf("%llu ", m);
         if (a > 1) {
             a--;
-            pow(a, m);
+            Pow(a, b, q, m, count);
         }
         printf("\n");
+        count = count + 1;
+        if (count == 11) {
+            exit(0);
+        }
+        q = q + 1;
+        m = 1;
+        a = b;
+        
     }
 }
 
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
     int k = 0; //k как счетчик
     if (argc!=3) {  //проверка
@@ -27,8 +37,13 @@ int main(int argc, char** argv)
         return 1;
     }
     char* c = argv[1];
-    unsigned long long N =(unsigned long long) argv[1];
+    unsigned long long N = 0;
+    for (int i = 0; c[i] !='\0'; i++) {
+        N = N * 10 + (c[i] - '0');
+    }
     unsigned int n = N;
+    //printf("N = %d\n", N);
+    //printf("n = %d\n", n);
 
     for (int i = 0; i < strlen(c); i++) {
         if (isdigit(c[i]))
@@ -40,7 +55,7 @@ int main(int argc, char** argv)
         return 1;
     }
     k = 0; //k как аргумент switch
-    if ((argv[2] != '-h') || (argv[2] != '/h') || (argv[2] != '-p') || (argv[2] != '/p') || (argv[2] != '-s') || (argv[2] != '/s') || (argv[2] != '-e') || (argv[2] != '/e') || (argv[2] != '-a') || (argv[2] != '/a') || (argv[2] != '-f') || (argv[2] != '/f')) {
+    if ((strcmp(argv[2], "-h") != 0) && (strcmp(argv[2], "/h") != 0) && (strcmp(argv[2], "-p") != 0) && (strcmp(argv[2], "/p") != 0) && (strcmp(argv[2], "-s") != 0) && (strcmp(argv[2], "/s") != 0) && (strcmp(argv[2], "-e") != 0) && (strcmp(argv[2], "/e") != 0) && (strcmp(argv[2], "-a") != 0) && (strcmp(argv[2], "/a") != 0) && (strcmp(argv[2], "-f") != 0) && (strcmp(argv[2], "/f") != 0)) {
         printf("Флаг не распознан.\n");
         usage();
         return 1;
@@ -50,12 +65,12 @@ int main(int argc, char** argv)
         return 1;
     }
     
-    if ((argv[2] == '-h') || (argv[2] == '/h')) k = 1;
-    if ((argv[2] == '-p') || (argv[2] == '/p')) k = 2;
-    if ((argv[2] == '-s') || (argv[2] == '/s')) k = 3;
-    if ((argv[2] == '-e') || (argv[2] == '/e')) k = 4;
-    if ((argv[2] == '-a') || (argv[2] == '/a')) k = 5;
-    if ((argv[2] == '-f') || (argv[2] == '/f')) k = 6;
+    if ((strcmp(argv[2], "-h") == 0) || (strcmp(argv[2], "/h") == 0)) k = 1;
+    if ((strcmp(argv[2], "-p") == 0) || (strcmp(argv[2], "/p") == 0)) k = 2;
+    if ((strcmp(argv[2], "-s") == 0) || (strcmp(argv[2], "/s") == 0)) k = 3;
+    if ((strcmp(argv[2], "-e") == 0) || (strcmp(argv[2], "/e") == 0)) k = 4;
+    if ((strcmp(argv[2], "-a") == 0) || (strcmp(argv[2], "/a") == 0)) k = 5;
+    if ((strcmp(argv[2], "-f") == 0) || (strcmp(argv[2], "/f") == 0)) k = 6;
     switch (k)
     {
     case 1:
@@ -69,11 +84,12 @@ int main(int argc, char** argv)
             printf("\n");
         }
         break;
-    case 2:
+    case 2: ;
         int count = 0;
         for (int i = 2; i < n; i++) {
             if ((n % i) == 0) count++;
         }
+        if (n == 1) count = 1;
         if (count == 0) {
             printf("Введенное число является простым\n");
         }else{
@@ -91,22 +107,26 @@ int main(int argc, char** argv)
             printf("Число должно быть не больше 10\n");
         }else{
             printf("1\n");
-            pow(n, 1);
+            Pow(n, n, 2, 1, 2);
         }
         break;
-    case 5:
+    case 5: ;
         unsigned long long sum = 0;
         for (int i = 1; i <= n; i++) {
             sum = sum + i;
         }
-        printf("sum = %d\n", sum);
+        printf("sum = %llu\n", sum);
         break;
-    case 6:
+    case 6: ;
         unsigned long long f = 1;
         for (int i = 1; i <= n; i++) {
             f = f * i;
         }
-        printf("factorial = %d\n", f);
+        if (f == 0) {
+            printf("Произошло переполнение\n");
+        }else{
+            printf("factorial = %llu\n", f);
+        }
         break;
     
     }
