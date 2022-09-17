@@ -2,27 +2,27 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <limits.h>
 
 void usage() {
     printf("Usage: program positive_integer -flag(or /flag)\n");
     printf("Flag: h, p, s, e, a, f\n");
 }
 
-void Pow(unsigned int a, unsigned int b, int q, unsigned long long m, int count) {
+void Pow(unsigned int a, unsigned int b, int q, unsigned long long m) {
     
     for (int i = q; i <= 10; i++) {
         m = m * i;
         printf("%llu ", m);
         if (a > 1) {
             a--;
-            Pow(a, b, q, m, count);
+            Pow(a, b, q, m);
         }
         printf("\n");
-        count = count + 1;
-        if (count == 11) {
+        q = q + 1;
+        if (q == 11) {
             exit(0);
         }
-        q = q + 1;
         m = 1;
         a = b;
         
@@ -42,15 +42,12 @@ int main(int argc, char* argv[])
         N = N * 10 + (c[i] - '0');
     }
     unsigned int n = N;
-    //printf("N = %d\n", N);
-    //printf("n = %d\n", n);
 
     for (int i = 0; i < strlen(c); i++) {
         if (isdigit(c[i]))
             k++; 
     }
     if (k != strlen(c)) {   //проверка
-        //printf("На месте первого аргумента должно быть целое положительное число\n")
         usage();
         return 1;
     }
@@ -107,7 +104,7 @@ int main(int argc, char* argv[])
             printf("Число должно быть не больше 10\n");
         }else{
             printf("1\n");
-            Pow(n, n, 2, 1, 2);
+            Pow(n, n, 2, 1);
         }
         break;
     case 5: ;
@@ -120,15 +117,15 @@ int main(int argc, char* argv[])
     case 6: ;
         unsigned long long f = 1;
         for (int i = 1; i <= n; i++) {
+            if (f > ULLONG_MAX/10) {
+                printf("Произошло переполнение\n");
+                return 1;
+            }else{
             f = f * i;
+            }
         }
-        if (f == 0) {
-            printf("Произошло переполнение\n");
-        }else{
-            printf("factorial = %llu\n", f);
-        }
+        printf("factorial = %llu\n", f);
         break;
-    
     }
     return 0;
 }
