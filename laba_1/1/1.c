@@ -9,26 +9,6 @@ void usage() {
     printf("Flag: h, p, s, e, a, f\n");
 }
 
-void Pow(unsigned int a, unsigned int b, int q, unsigned long long m) {
-    
-    for (int i = q; i <= 10; i++) {
-        m = m * i;
-        printf("%llu ", m);
-        if (a > 1) {
-            a--;
-            Pow(a, b, q, m);
-        }
-        printf("\n");
-        q = q + 1;
-        if (q == 11) {
-            exit(0);
-        }
-        m = 1;
-        a = b;
-        
-    }
-}
-
 int main(int argc, char* argv[])
 {
     int k = 0; //k как счетчик
@@ -38,12 +18,12 @@ int main(int argc, char* argv[])
     }
     char* c = argv[1];
     unsigned long long N = 0;
-    for (int i = 0; c[i] !='\0'; i++) {
+    for (int i = 0; c[i] !='\0'; i++) { //Собираем число
         N = N * 10 + (c[i] - '0');
     }
     unsigned int n = N;
 
-    for (int i = 0; i < strlen(c); i++) {
+    for (int i = 0; i < strlen(c); i++) { 
         if (isdigit(c[i]))
             k++; 
     }
@@ -99,12 +79,20 @@ int main(int argc, char* argv[])
         }
         printf("\n");
         break;
-    case 4:
+    case 4: ;
+        unsigned long long p;
         if (n > 10) {
             printf("Число должно быть не больше 10\n");
         }else{
             printf("1\n");
-            Pow(n, n, 2, 1);
+            for (int i = 2; i <= 10; i++) {
+                p = 1;
+                for (int j = 1; j <= n; j++) {
+                    p = p * i;
+                    printf("%llu ", p);
+                }
+            printf("\n");
+           }
         }
         break;
     case 5: ;
