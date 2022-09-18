@@ -17,12 +17,6 @@ int main(int argc, char* argv[])
         return 1;
     }
     char* c = argv[1];
-    unsigned long long N = 0;
-    for (int i = 0; c[i] !='\0'; i++) { //Собираем число
-        N = N * 10 + (c[i] - '0');
-    }
-    unsigned int n = N;
-
     for (int i = 0; i < strlen(c); i++) { 
         if (isdigit(c[i]))
             k++; 
@@ -31,6 +25,11 @@ int main(int argc, char* argv[])
         usage();
         return 1;
     }
+    unsigned long long N = 0;
+    for (int i = 0; c[i] !='\0'; i++) { //Собираем число
+        N = N * 10 + (c[i] - '0');
+    }
+    unsigned int n = N;
     k = 0; //k как аргумент switch
     if ((strcmp(argv[2], "-h") != 0) && (strcmp(argv[2], "/h") != 0) && (strcmp(argv[2], "-p") != 0) && (strcmp(argv[2], "/p") != 0) && (strcmp(argv[2], "-s") != 0) && (strcmp(argv[2], "/s") != 0) && (strcmp(argv[2], "-e") != 0) && (strcmp(argv[2], "/e") != 0) && (strcmp(argv[2], "-a") != 0) && (strcmp(argv[2], "/a") != 0) && (strcmp(argv[2], "-f") != 0) && (strcmp(argv[2], "/f") != 0)) {
         printf("Флаг не распознан.\n");
