@@ -2,27 +2,28 @@
 #include <math.h>
 #include <string.h>
 #include <limits.h>
+#include <ctype.h>
 
 double conversion_to_number_q(char* c, int* l, int* f) {
     int k = 0;
     int count = -1;
     int sign = 1;
     double N = 0;
-    f = 0;
-    l = 0;
+    *f = 0;
+    *l = 0;
     for (int i = 0; i < strlen(c); i++) {  
         if (isdigit(c[i]))//проверка на то что символ - цифра
             k++; 
-        if (c[0] == '-') {
+        if ((c[0] == '-') && (sign == 1)) {
             k++;
             sign = -1;
         }
-        if ((c[i] == '.') && (c[0] !='.') && (f == 0)) {
+        if ((c[i] == '.') && (c[0] !='.') && (*f == 0)) {
             count++; //показатель того сколько цифр после точки
             k++;
-            f = f + 1; // показатель вещественности числа
+            *f = *f + 1; // показатель вещественности числа
         }
-        if (f == 1) count++; 
+        if (*f == 1) count++; 
     }
     if (count == 0) k--;
     if (k != strlen(c)) {   //проверка
@@ -35,12 +36,12 @@ double conversion_to_number_q(char* c, int* l, int* f) {
                 N = N * 10 + (c[i] - '0');
             }
         }
-        if (f == 1) {
-            for (int i = 0; i < count; i++) N = N/10.;
+        if (*f == 1) {
+            for (int i = 0; i < count-1; i++) N = N/10.;
         }
         if (sign == -1) { //если число отрицательное
             N = N * sign;
-            if ((N > __DBL_MAX__) || (N < __DBL_MIN__)) {
+            if ((N > __DBL_MAX__) || (N < -__DBL_MAX__)) {
                 printf("Произошло переполнение\n");
                 *l = 2;
                 return 1;
@@ -62,17 +63,21 @@ void flag_q(double a, double b, double c, double d) {
      if (d < 0) printf("При a = %lf , b = %lf, c = %lf действительных корней нет\n", a, b, c);
      if (d == 0) {
         x1 = (double)(-b)/(2*a);
-        printf("При a = %lf , b = %lf, c = %lf : x = %lf\n", a, b, c, x1);
+        printf("При a = %lf , b = %lf, c = %lf : x = %.10lf\n", a, b, c, x1);
     }
     if (d > 0) {
         x1 = ((double)(-b)+sqrt(d))/(2*a);
         x2 = ((double)(-b)-sqrt(d))/(2*a);
-        printf("При a = %lf , b = %lf, c = %lf : x1 = %lf, x2 = %lf\n", a, b, c, x1, x2);
+        printf("При a = %lf , b = %lf, c = %lf : x1 = %.10lf, x2 = %.10lf\n", a, b, c, x1, x2);
     }
 }
 
 int main(int argc, char* argv[]) {
     int k = 0;
+    if (argc < 4) {
+        printf("Usage: program -(/)flag\nПосле флага числа в зависимости от флага\nФлаги:q, m, t\n");
+        return 1;
+    }
     if ((strcmp(argv[1], "-q") != 0) && (strcmp(argv[1], "/q") != 0) && (strcmp(argv[1], "-m") != 0) && (strcmp(argv[1], "/m") != 0) && (strcmp(argv[1], "-t") != 0) && (strcmp(argv[1], "/t") != 0)) {
         printf("Флаг не распознан. Возможные флаги: -(/)q, -(/)m, -(/)t.\n");
         return 1;
@@ -113,7 +118,7 @@ int main(int argc, char* argv[]) {
         }
         break;
     case 2: ;
-        int n, m, l ,f;
+        int n, m;
         double N, M;
         if (argc != 4) {
             printf("Вместе с ключом -(/)m нужно ввести 2 ненулевых целых числа\n");
@@ -155,9 +160,7 @@ int main(int argc, char* argv[]) {
             }
         }
         break;
-    case 3: ;
-        int l, f;
-        double a, b, c;
+    case 3:
         if (argc!=5) {
             printf("Вместе с ключом -(/)t нужно ввести 3 параметра\n");
         }else{
