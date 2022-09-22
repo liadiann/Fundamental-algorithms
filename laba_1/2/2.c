@@ -10,7 +10,7 @@ double conversion_to_number_q(char* c, int* l, int* f) {
     int sign = 1;
     double N = 0;
     *f = 0;
-    *l = 0;
+    *l = 0; //показатель ошибки
     for (int i = 0; i < strlen(c); i++) {  
         if (isdigit(c[i]))//проверка на то что символ - цифра
             k++; 

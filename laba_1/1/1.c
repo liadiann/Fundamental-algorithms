@@ -30,6 +30,10 @@ int main(int argc, char* argv[])
         N = N * 10 + (c[i] - '0');
     }
     unsigned int n = N;
+    if (n == 0) {
+        printf("Число должно быть положительным\n");
+        return 1;
+    }
     k = 0; //k как аргумент switch
     if ((strcmp(argv[2], "-h") != 0) && (strcmp(argv[2], "/h") != 0) && (strcmp(argv[2], "-p") != 0) && (strcmp(argv[2], "/p") != 0) && (strcmp(argv[2], "-s") != 0) && (strcmp(argv[2], "/s") != 0) && (strcmp(argv[2], "-e") != 0) && (strcmp(argv[2], "/e") != 0) && (strcmp(argv[2], "-a") != 0) && (strcmp(argv[2], "/a") != 0) && (strcmp(argv[2], "-f") != 0) && (strcmp(argv[2], "/f") != 0)) {
         printf("Флаг не распознан.\n");
@@ -104,7 +108,7 @@ int main(int argc, char* argv[])
     case 6: ;
         unsigned long long f = 1;
         for (int i = 1; i <= n; i++) {
-            if (f > ULLONG_MAX/10) {
+            if (n > 20) {
                 printf("Произошло переполнение\n");
                 return 1;
             }else{
