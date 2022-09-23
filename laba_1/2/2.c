@@ -52,24 +52,53 @@ double conversion_to_number_q(char* c, int* l, int* f) {
     return N;
 }
 
-double discriminant(double a, double b, double c) {
-    double d;
-    d = b*b-4*a*c;
-    return d;
+void flag_q(double a, double b, double c, double* d, double* x1, double* x2) {
+    double eps = 0.00001;
+    *d = b*b-4*a*c;
+    if (fabs(a) > eps) {
+        if (fabs(*d) < eps) {
+            *x1 = (double)(-b)/(2*a);
+        } else if (*d > 0) {
+            *x1 = ((double)(-b)+sqrt(*d))/(2*a);
+            *x2 = ((double)(-b)-sqrt(*d))/(2*a);
+        }
+    }
 }
 
-void flag_q(double a, double b, double c, double d) {
-     double x1, x2;
-     if (d < 0) printf("При a = %lf , b = %lf, c = %lf действительных корней нет\n", a, b, c);
-     if (d == 0) {
-        x1 = (double)(-b)/(2*a);
-        printf("При a = %lf , b = %lf, c = %lf : x = %.10lf\n", a, b, c, x1);
+void Print_q(double* d, double* x1, double* x2, double* a, double* b, double* c) {
+    double eps = 0.00001;
+    if (fabs(*a) < eps) printf("При a = 0 не квадратное уравнение\n");
+    else if (fabs(*d) < eps) printf("При a = %lf , b = %lf, c = %lf: x = %lf\n", *a, *b, *c, *x1);
+    else if (*d < 0) printf("При a = %lf , b = %lf, c = %lf действительных корней нет\n", *a, *b, *c);
+    else if (*d > 0) printf("При a = %lf , b = %lf, c = %lf: x1 = %lf, x2 = %lf \n", *a, *b, *c, *x1, *x2);
+}
+
+int multiple(int n, int m) {
+    int point = -1;
+    if (m == 0) {
+        point = 2;
+        return point;
     }
-    if (d > 0) {
-        x1 = ((double)(-b)+sqrt(d))/(2*a);
-        x2 = ((double)(-b)-sqrt(d))/(2*a);
-        printf("При a = %lf , b = %lf, c = %lf : x1 = %.10lf, x2 = %.10lf\n", a, b, c, x1, x2);
+    if ((n % m) == 0) {
+        point = 0;
+    }else{
+       point = 1;
     }
+    return point;
+}
+
+int triangle(double a, double b, double c) {
+    double aa, bb,cc, eps = 0.0001;
+    int point = -1;
+    aa = a*a;
+    bb = b*b;
+    cc = c*c;
+    if ((fabs(aa + bb - cc) < eps) || (fabs(bb + cc - aa) < eps) || (fabs(aa + cc - bb) < eps)) {
+        point = 0;
+    }else{
+        point = 1;
+    }
+    return point;
 }
 
 int main(int argc, char* argv[]) {
@@ -89,7 +118,7 @@ int main(int argc, char* argv[]) {
     {
     case 1: ;
         int l, f;
-        double a, b, c, d, x;
+        double a, b, c, d, x1, x2;
         if (argc!=5) {
             printf("Вместе с ключом -(/)q нужно ввести 3 параметра\n");
         }else{
@@ -99,27 +128,27 @@ int main(int argc, char* argv[]) {
             if ((l == 1) || (l == 2)) return 1;
             c = conversion_to_number_q(argv[4], &l, &f);
             if ((l == 1) || (l == 2)) return 1;
-            if ((a == 0) && (b == 0) && (c == 0)) {
+            if ((b == 0) && (c == 0)) {
                 printf("x - любое действительное число\n");
                 return 0;
             }
-            d = discriminant(a, b, c);
-            flag_q(a, b, c, d);
-            d = discriminant(a, c, b);
-            flag_q(a, c, b, d);
-            d = discriminant(b, a, c);
-            flag_q(b, a, c, d);
-            d = discriminant(b, c, a);
-            flag_q(b, c, a, d);
-            d = discriminant(c, a, b);
-            flag_q(c, a, b, d);
-            d = discriminant(c, b, a);
-            flag_q(c, b, a, d);
+            flag_q(a, b, c, &d, &x1, &x2);
+            Print_q(&d, &x1, &x2, &a, &b, &c);
+            flag_q(a, c, b, &d, &x1, &x2);
+            Print_q(&d, &x1, &x2, &a, &c, &b);
+            flag_q(b, a, c, &d, &x1, &x2);
+            Print_q(&d, &x1, &x2, &b, &a, &c);
+            flag_q(b, c, a, &d, &x1, &x2);
+            Print_q(&d, &x1, &x2, &b, &c, &a);
+            flag_q(c, a, b, &d, &x1, &x2);
+            Print_q(&d, &x1, &x2, &c, &a, &b);
+            flag_q(c, b, a, &d, &x1, &x2);
+            Print_q(&d, &x1, &x2, &c, &b, &a);
         }
         break;
     case 2: ;
-        int n, m;
-        double N, M;
+        int n, m, point;
+        double N, M, eps = 0.0001;
         if (argc != 4) {
             printf("Вместе с ключом -(/)m нужно ввести 2 ненулевых целых числа\n");
         }else{
@@ -128,7 +157,7 @@ int main(int argc, char* argv[]) {
                 printf("Числа должны быть целые\n");
                 return 1;
             }
-            if (N == 0) {
+            if (fabs(N) < eps) {
                 printf("Числа должны быть отличны от нуля\n");
                 return 1;
             }
@@ -143,7 +172,7 @@ int main(int argc, char* argv[]) {
                 printf("Числа должны быть целые\n");
                 return 1;
             }
-            if (M == 0) {
+            if (fabs(M) < eps) {
                 printf("Числа должны быть отличны от нуля\n");
                 return 1;
             }
@@ -153,38 +182,41 @@ int main(int argc, char* argv[]) {
                 printf("Переполнение!\n");
                 return 1;
             }
-            if ((n % m) == 0) {
-                printf("Первое число кратно второму\n");
-            }else{
-                printf("Первое число не кратно второму\n");
+            point = multiple(n, m);
+            if (point == 2) {
+                printf("Второе число - ноль!\n");
+                return 1;
             }
+            if (point == 0) printf("Первое число кратно второму\n");
+            if (point == 1) printf("Первое число не кратно второму\n");
         }
         break;
-    case 3:
+    case 3: ;
         if (argc!=5) {
             printf("Вместе с ключом -(/)t нужно ввести 3 параметра\n");
         }else{
             a = conversion_to_number_q(argv[2], &l, &f);
             if ((l == 1) || (l == 2)) return 1;
-            if (a == 0) {
+            if (fabs(a) < eps) {
                 printf("Числа должны быть отличны от нуля\n");
                 return 1;
             }
             b = conversion_to_number_q(argv[3], &l, &f);
             if ((l == 1) || (l == 2)) return 1;
-            if (b == 0) {
+            if (fabs(b) < eps) {
                 printf("Числа должны быть отличны от нуля\n");
                 return 1;
             }
             c = conversion_to_number_q(argv[4], &l, &f);
             if ((l == 1) || (l == 2)) return 1;
-            if (c == 0) {
+            if (fabs(c) < eps) {
                 printf("Числа должны быть отличны от нуля\n");
                 return 1;
             }
-            if ((c*c == a*a + b*b) || (a*a == b*b + c*c) || (b*b == a*a + c*c)) {
+            point = triangle(a, b, c);
+            if (point == 0) {
                 printf("Введенные значения могут быть сторонами прямоугольного треугольника\n");
-            }else{
+            }else if (point == 1){
                 printf("Введенные значения не могут быть сторонами прямоугольного треугольника\n");
             }
         }
