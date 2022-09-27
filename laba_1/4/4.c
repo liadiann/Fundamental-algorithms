@@ -12,18 +12,14 @@ int task(FILE* fin, FILE* fout) {
         return -1;
     }
     char buf1[SIZE], buf2[SIZE], buf3[SIZE];
-    int count1 = 0, count2 = 0, f = 0;
+    int count1 = 0, count2 = 0;
     char c, _c = 0;
     char* ptr = buf1;
      while (!feof(fin)) {
         c = fgetc(fin);
         count1++;
-        //if (isalnum(c)) *ptr++=c;
-        if (c != ' ' && c != '\t' && c!='\n' && c != EOF) {
-            *ptr++=c;
-            f = 1;
-        }
-        if (((c == ' ') || (c == '\t')) && isalnum(_c)) {
+        if (isalnum(c)) *ptr++=c;
+        if (!(isalnum(c)) && isalnum(_c)) {
             count2+=1;
             *ptr = 0;
             if (count2 == 1) {
