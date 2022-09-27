@@ -55,10 +55,6 @@ int main(int argc, char* argv[]) {
     }
     FILE* fIn = NULL;
     FILE* fOut = NULL;
-    char buf1[SIZE], buf2[SIZE], buf3[SIZE];
-    int count1 = 0, count2 = 0;
-    char c, _c = 0;
-    char* ptr = buf1;
     fIn = fopen(argv[1], "r");
     fOut = fopen("out", "w");
     int flag = 1;
