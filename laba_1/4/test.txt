@@ -1,0 +1,5 @@
+father   brother   mother   
+mother2     brother    father  
+brother4   father     mother2
+father   mother      brother
+mother   brother1   father

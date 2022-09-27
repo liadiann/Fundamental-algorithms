@@ -182,7 +182,7 @@ int main(int argc, char* argv[]) {
         int flag;
         flag = Exclude_Digits(fIn, fOut);
         if (flag == -1) {
-            perror("Ошибка: ");
+            perror("Ошибка открытия файла");
         }
         if (flag == 0) {
             printf("Все цифры из файла исключены\n");
@@ -191,7 +191,7 @@ int main(int argc, char* argv[]) {
     case 2:
         flag = number_of_letters_in_a_string(fIn, fOut);
         if (flag == -1) {
-            perror("Ошибка: ");
+            perror("Ошибка открытия файла");
         }
         if (flag == 0) {
             printf("Символы букв в каждой строке подсчитаны\n");
@@ -200,7 +200,7 @@ int main(int argc, char* argv[]) {
     case 3:
         flag = not_a_number_not_a_letter_not_a_space(fIn, fOut);
         if (flag == -1) {
-            perror("Ошибка: ");
+            perror("Ошибка открытия файла");
         }
         if (flag == 0) {
             printf("Символы, не являющиеся буквами, цифрами и пробелом подсчитаны\n");
@@ -218,7 +218,7 @@ int main(int argc, char* argv[]) {
     case 5:
         flag = flag_f(fIn, fOut);
         if (flag == -1) {
-            perror("Ошибка: ");
+            perror("Ошибка открытия файла");
         }
         if (flag == 0) {
             printf("Задание успешно выполнено!\n");
