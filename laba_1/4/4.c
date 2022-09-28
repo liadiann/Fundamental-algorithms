@@ -11,14 +11,18 @@ int task(FILE* fin, FILE* fout) {
         return -1;
     }
     char buf1[SIZE], buf2[SIZE], buf3[SIZE];
-    int count1 = 0, count2 = 0;
+    int count1 = 0, count2 = 0, flag = 0; //count1 - количество символов в лексеме. count2- порядковый номер лексемы
     char c, _c = 0;
     char* ptr = buf1;
      while (!feof(fin)) {
         c = fgetc(fin);
         count1++;
-        if (isalnum(c)) *ptr++=c;
-        if (!(isalnum(c)) && isalnum(_c)) {
+        if (c!= ' ' && c != '\t' && c!= '\n' && c != EOF ) {
+            *ptr++=c;
+            flag = 1;
+        }
+        if ((c == ' ' || c == '\n' || c == '\t') && flag == 1) {
+            flag = 0;
             count2+=1;
             *ptr = 0;
             if (count2 == 1) {
