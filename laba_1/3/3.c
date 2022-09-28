@@ -225,5 +225,7 @@ int main(int argc, char* argv[]) {
         }
         break;
     }
+    fclose(fIn);
+    fclose(fOut);
     return 0;
 }
