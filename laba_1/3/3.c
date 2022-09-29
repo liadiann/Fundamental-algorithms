@@ -106,7 +106,7 @@ int flag_f(FILE* fin, FILE* fout) {
             fputc(c, fout);
         }else if (c != EOF) {
             if (flag == 0) flag = 1;
-            if ((count % 2 == 0) && (count % 5 == 0)) {
+            if ((count % 10 == 0)) {
                 if (isalpha(c)) {
                     c = tolower(c);
                 }
@@ -121,7 +121,7 @@ int flag_f(FILE* fin, FILE* fout) {
             else if (count % 5 == 0) {
                     fprintf(fout, "%d", (int)c);
             }
-            else if (!(count % 2 == 0) && (count % 5 !=0)) fputc(c, fout);
+            else if (count % 10 != 0) fputc(c, fout);
         }
     }
     return 0;
