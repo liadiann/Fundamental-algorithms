@@ -34,8 +34,20 @@ int main() {
     printf("Введите размерности массивов A и B соответственно: ");
     scanf("%d %d", &N1, &N2);
     A = (int*)malloc(N1*sizeof(int));
+    if (A == NULL) {
+        printf("Ошибка!\n");
+        return 1;
+    }
     B = (int*)malloc(N2*sizeof(int));
+    if (B == NULL) {
+        printf("Ошибка!\n");
+        return 1;
+    }
     C = (int*)malloc(N1*sizeof(int));
+    if (C == NULL) {
+        printf("Ошибка!\n");
+        return 1;
+    }
     array_filling(A, N1);
     Print_an_array(A, N1);
     srand(time(NULL));
