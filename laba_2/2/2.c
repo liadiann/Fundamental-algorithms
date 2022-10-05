@@ -12,7 +12,8 @@ void string_length(char* c, int* l) {
 }
 
 void reverce(char* c) {
-    int l = strlen(c);
+    int l = 0;
+    string_length(c, &l);
     char* ptr1 = c;
     char* ptr2 = c + l - 1;
     char tmp;
@@ -38,7 +39,8 @@ void conversion_to_uppercase(char* c) {
 }
 
 void flag_n(char* c, char* q) {
-    int l = strlen(c);
+    int l = 0;
+    string_length(c, &l);
     int count = 0;
     char* p = c;
     for (int i = 0; i < l; i++) {
@@ -93,7 +95,8 @@ int main(int argc, char* argv[]) {
     char* s;
     char* q;
     if (strcmp(argv[2], "-n") == 0) {
-        q = (char*)malloc((strlen(argv[1])+1)*sizeof(char));
+        string_length(argv[1], &l);
+        q = (char*)malloc((l+1)*sizeof(char));
         if (q == NULL) {
             printf("Ошибка!\n");
             return 1;
