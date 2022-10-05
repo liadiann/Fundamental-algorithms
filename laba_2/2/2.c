@@ -72,7 +72,7 @@ void flag_n(char* c, char* q) {
 void strcat2(char* c, char* q) {
     while(*c) c++;
     while(*c++ = *q++);
-    c--;
+    *c = '\0';
 }
 
 void print_string(char* c) {
