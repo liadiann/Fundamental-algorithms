@@ -109,7 +109,7 @@ int main(int argc, char* argv[]) {
     if (argc == 4) {
         int length = 0;
         string_length(argv[1], &length);
-        string_length(argv[2], &length);
+        string_length(argv[3], &length);
         s = (char*)malloc(length*sizeof(char));
         if (s == NULL) {
         printf("Ошибка!\n");
