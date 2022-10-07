@@ -18,6 +18,8 @@ double arg_geom(int count, ...) {
 }
 
 double pow_integer(double N, int degree) {
+    if (degree == 0) return 1;
+    
     if (degree == 1) {
         return N;
     }
