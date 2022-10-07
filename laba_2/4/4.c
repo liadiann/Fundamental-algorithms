@@ -23,7 +23,7 @@ double pow_integer(double N, int degree) {
         return N;
     }
     if (degree ==0) return 1;
-    if (fabs(N-eps) < 0) return NAN; 
+    if (fabs(N) < eps) return NAN; 
     if (degree > 1) return N*pow_integer(N, degree-1);
     if (degree < 0){
         N = 1./ pow_integer(N, -degree);
