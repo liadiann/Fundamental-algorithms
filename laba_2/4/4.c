@@ -20,8 +20,11 @@ double arg_geom(int count, ...) {
 double pow_integer(double N, int degree) {
     if (degree == 1) {
         return N;
-    }else{
-        N = N * pow_integer(N, degree - 1);
+    }
+    if (degree ==0) return 1;
+    if (degree > 1) return N*pow_integer(N, degree-1);
+    if (degree < 0){
+        N = 1./ pow_integer(N, -degree);
     }
     return N;
 }
@@ -35,7 +38,7 @@ int main() {
     printf("res =%lf\n", g);
     }
     double res;
-    res = pow_integer((double)5, 5);
+    res = pow_integer((double)2, -3);
     if (isnan(res)!=0) {
         printf("Ошибка!\n");
         return 1;
