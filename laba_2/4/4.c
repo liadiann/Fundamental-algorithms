@@ -22,6 +22,7 @@ double pow_integer(double N, int degree) {
         return N;
     }
     if (degree ==0) return 1;
+    if (N == 0) return 0; 
     if (degree > 1) return N*pow_integer(N, degree-1);
     if (degree < 0){
         N = 1./ pow_integer(N, -degree);
@@ -38,7 +39,7 @@ int main() {
     printf("res =%lf\n", g);
     }
     double res;
-    res = pow_integer((double)2, -3);
+    res = pow_integer((double)0, -3);
     if (isnan(res)!=0) {
         printf("Ошибка!\n");
         return 1;
