@@ -3,47 +3,50 @@
 #include <stdarg.h>
 #include <string.h>
 
-int* substring_search(int count, char* s, ...) {
-    FILE* fIn = NULL;
-    int k, n, symb = 0, el = 0;
+int my_strstr(char* s, FILE* fin) {
     char c;
-    int* count_ = (int*)calloc(count, sizeof(int));
-    if (count_ == NULL) {
+    int k = 0, n = 0, symb = 0;
+    int count_ = 0;
+    if (fin == NULL) {
+        count_ = -1;
         return count_;
     }
-     if (s == "") {
-        for (int j = 0; j < count; j++) count_[j] = -2;
-            return count_; 
+    if (!strcmp(s, "")) {
+        count_ = -2;
+        return count_; 
     }
-    va_list file;
-    va_start(file, s);
-    for (int i = 0; i < count; i++) {
-        k = 0;
-        n = 0;
-        fIn = fopen(va_arg(file, char*), "r");
-        if (fIn == NULL) {
-            for (int j = 0; j < count; j++) count_[j] = -1;
-            return count_;
-        }
-
-        while (!feof(fIn)) {
-            c = fgetc(fIn);
+    while (!feof(fin)) {
+            c = fgetc(fin);
             if (c != '\n' && c != EOF) {
                 k++;
             }
             if (s[symb] == c) {
                 n++;
                 symb++;
-            }else if (s[symb] != c) {
+            }else if (s[symb] == c) {
                 n = 0;
                 symb = 0;
             }
             if (n == strlen(s)) {
-                count_[el] = k - n + 1;
-                el++;
+                count_ = k - n + 1;
                 break;
             }
         }
+        return count_;
+}
+
+int* substring_search(int count, char* s, ...) {
+    FILE* fIn = NULL;
+    int* count_ = (int*)calloc(count, sizeof(int));
+    if (count_ == NULL) {
+        return count_;
+    }
+    va_list file;
+    va_start(file, s);
+    for (int i = 0; i < count; i++) {
+        fIn = fopen(va_arg(file, char*), "r");
+        count_[i] = my_strstr(s, fIn);
+
         fclose(fIn);
     }
     va_end(file);
@@ -51,7 +54,7 @@ int* substring_search(int count, char* s, ...) {
 }
 
 int main() {
-    char* s = " ";
+    char* s = "aranara";
     int count = 3; 
     int* res = substring_search(count, s, (char*)"txt1", (char*)"txt2", (char*)"txt3");
     if (res == NULL) {
@@ -59,6 +62,7 @@ int main() {
         return 1;
     }
     for (int i = 0; i < count; i++) {
+       // printf("count_ = %d\n", res[i]);
         if (res[i] == -2) {
             printf("Пустая строка!\n");
             return 2;

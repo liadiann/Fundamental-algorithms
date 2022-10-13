@@ -51,6 +51,7 @@ void unique_elements(int* arr1, int* arr2, int size, int* count) {
         for (int j = 0; j < *count; j++) {
             if (arr1[i] == arr2[j]) {
                 f = 1;
+                break;
             }
         }
         if (f == 0) {
@@ -106,7 +107,7 @@ int main() {
     }
     if (flag == 1) {
         find_max_and_min(arr1, N, &index_max, &index_min);
-        swap_elements(&arr1[index_max], &arr1[index_min]);
+        swap_elements(&arr1[index_max], &arr1[index_min]); // arr1 + index_max
         print_an_array(arr1, N);
     }
     if (flag == 2) {
