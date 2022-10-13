@@ -56,8 +56,7 @@ int main() {
     }
     for (int i = 0; i < count; i++) {
         if (res[i] == -1) {
-            printf("Файл не открылся\n");
-            return 2;
+            printf("Файл %d не открылся\n", i+1);
         }
         if (res[i] == 0) {
             printf("В %d файле нет нужной подстроки\n", i+1);
