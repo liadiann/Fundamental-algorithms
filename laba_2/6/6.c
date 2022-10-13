@@ -11,6 +11,10 @@ int* substring_search(int count, char* s, ...) {
     if (count_ == NULL) {
         return count_;
     }
+     if (s == "") {
+        for (int j = 0; j < count; j++) count_[j] = -2;
+            return count_; 
+    }
     va_list file;
     va_start(file, s);
     for (int i = 0; i < count; i++) {
@@ -24,7 +28,7 @@ int* substring_search(int count, char* s, ...) {
 
         while (!feof(fIn)) {
             c = fgetc(fIn);
-            if (c != '\n' && c!= '\t' && c != EOF && c != ' ') {
+            if (c != '\n' && c != EOF) {
                 k++;
             }
             if (s[symb] == c) {
@@ -47,7 +51,7 @@ int* substring_search(int count, char* s, ...) {
 }
 
 int main() {
-    char* s = "aranara";
+    char* s = " ";
     int count = 3; 
     int* res = substring_search(count, s, (char*)"txt1", (char*)"txt2", (char*)"txt3");
     if (res == NULL) {
@@ -55,6 +59,10 @@ int main() {
         return 1;
     }
     for (int i = 0; i < count; i++) {
+        if (res[i] == -2) {
+            printf("Пустая строка!\n");
+            return 2;
+        }
         if (res[i] == -1) {
             printf("Файл %d не открылся\n", i+1);
         }
