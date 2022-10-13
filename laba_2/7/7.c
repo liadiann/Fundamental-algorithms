@@ -44,23 +44,43 @@ int is_convex(int count, ...) {
 
 }
 
+double polynomial(int count, double x, int degree, ...){
+    double res;
+    va_list element;
+    va_start(element, degree);
+    res = va_arg(element, double);
+    for(int i = degree; i > 0; i--) {
+        res = res * x + va_arg(element, double);
+    }
+    va_end(element);
+    return res;
+}
+
 int main() {
     int flag;
-    printf("Выберите, что хотите сделать(1 или 2):\n1. Реализовать функцию с переменным числом аргументов,
-    принимающую координаты точек многоугольника и вычисляющую,является ли этот многоугольник выпуклым\n2. Реализовать функцию с переменным числом аргументов, которая, будет находить значения многочлена степени n в заданной точке. Входными параметрами являются точка, в которой определяется значение многочлена, степень многочлена и его коэффициенты.\n");
+    printf("Выберите то, что хотите сделать(1 или 2)\n1. Проверить многоугольник на выпуклость\n2. Вычислить многочлен в точке\n");
     scanf("%d", &flag);
-    Apex polygon[] = {{0.6, 2.1}, {1.8, 3.6}, {2.2, 2.3}, {3.6, 2.4}, {3.1, 0.5}};
-    int res;
-    res = is_convex(4, polygon[0], polygon[1], polygon[2], polygon[3], polygon[4]);
-    if (res == 1) {
-        printf("Память не выделилась!\n");
-        return 1;
+    if (flag == 1) {
+        Apex polygon[] = {{0.6, 2.1}, {1.8, 3.6}, {2.2, 2.3}, {3.6, 2.4}, {3.1, 0.5}};
+        int res;
+        res = is_convex(4, polygon[0], polygon[1], polygon[2], polygon[3], polygon[4]);
+        if (res == 1) {
+            printf("Память не выделилась!\n");
+            return 1;
+        }
+        if (res == 2) {
+            printf("Многоугольник не выпуклый!\n");
+        }
+        if (res == 0) {
+            printf("Многоугольник выпуклый!\n");
+        }
     }
-    if (res == 2) {
-        printf("Многоугольник не выпуклый!\n");
-    }
-    if (res == 0) {
-        printf("Многоугольник выпуклый!\n");
+    if (flag == 2) {
+        double x, res;
+        printf("Введите точку, в которой вычисляется многочлен: ");
+        scanf("%lf", &x);
+        res = polynomial(5, x, 4, (double)3.2, (double)5.5, (double)10, (double)1.23, (double)-2);
+        printf("Значение многочлена в точке %lf: %lf", x, res);
     }
     return 0;
 }
