@@ -7,10 +7,6 @@ double f(double x) {
 }
 
 double dichotomy(double a, double b, int precision, double (*f)(double)) {
-    /*double eps = 1.0;
-    while ((1+eps/2) > 1) {
-        eps = eps/2.;
-    }*/
     if (precision < 0) return NAN;
     double eps = pow(10, -precision);
     double x;
