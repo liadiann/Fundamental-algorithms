@@ -45,7 +45,10 @@ double f_e(double x) {
     return log(x) - 1;
 }
 
-double dichotomy(double a, double b, double eps, double (*f)(double)) {
+double f_e_pr(double x) {
+    return 1./x;
+}
+/*double dichotomy(double a, double b, double eps, double (*f)(double)) {
     double res;
     if (b < a) res = -1;
     else {
@@ -60,6 +63,34 @@ double dichotomy(double a, double b, double eps, double (*f)(double)) {
     res = (a + b)/2.;
     }
     return res;
+}*/
+
+/*double iter(double a, double b, double f(double), double eps)
+{
+    double x;
+    if (b < a) x = -1;
+    else {
+        x=(a + b)/2.;
+        while (fabs(f(x)-x) > eps)
+        {
+            x = f(x);
+            printf("x= %.16lf\n", x);
+        }
+    }
+    return x;
+}*/
+
+double newton(double a, double b, double F(double), double Fpr(double), double eps) {
+    double x;
+    if (b < a) x = -1;
+    else {
+        x=(a + b)/2.;
+        while (fabs(f_e(x)/f_e_pr(x)) > eps)
+        {
+            x = x - f_e(x)/f_e_pr(x);
+        }
+    }
+    return x;
 }
 
 double e_equation(int precision) {
@@ -69,7 +100,7 @@ double e_equation(int precision) {
     }
     double eps = pow(10, -precision);
     if (precision == 0) eps = 0.01;
-    res = dichotomy(0.0, 5.0, eps, f_e);
+    res = newton(0.1, 4.5, f_e, f_e_pr, eps);
     return res;
 }
 
@@ -94,7 +125,7 @@ int main() {
             return negative_precision;
         }
         printf("e = %.*lf\n", precision, res);
-        printf("e = %.*lf\n", precision, exp(1));
+       // printf("e = %.*lf\n", precision, exp(1));
     }
     if (choice == 2) {
         res = e_row(precision);
@@ -117,7 +148,7 @@ int main() {
             return the_borders_are_not_in_that_order; 
         } 
         printf("e = %.*lf\n", precision, res);
-        printf("e = %.*lf\n", precision, exp(1));
+        //printf("e = %.*lf\n", precision, exp(1));
     }
     if (choice == 4) {
         
