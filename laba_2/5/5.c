@@ -80,22 +80,26 @@ int main() {
     scanf("%d", &a);
     if (a < 0) {
         printf("Числа только положительные!\n");
+        free(arr1);
         return 3;
     } 
     printf("b = ");
     scanf("%d", &b);
     if (b < 0) {
         printf("Числа только положительные!\n");
+        free(arr1);
         return 4;
     }
     if (a > b) {
         printf("Неправильно введен диапазон! Первое число должно быть меньше второго\n");
+        free(arr1);
         return 5;
     } 
     c = b - a + 1;
     array_filling(arr1, N, a, c, &flag);
     if (flag == 1) {
         printf("Размер массива должен быть положительным числом!\n");
+        free(arr1);
         return 6;
     }
     print_an_array(arr1, N);
@@ -103,6 +107,7 @@ int main() {
     scanf("%d", &flag);
     if ((flag != 1) && (flag != 2)) {
         printf("Нужно ввести цифру 1 или 2\n");
+        free(arr1);
         return 7;
     }
     if (flag == 1) {
