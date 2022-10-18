@@ -15,36 +15,90 @@ double e_lim(int precision){ //что-то не так?
     }
     long int n = 1;
     element = pow(1 + (1./n), n);
-    double element_next =  pow(1 + (1./(n+1)), (n + 1));
+    double element_1 =  pow(1 + (1./(n+1)), (n + 1));
     double eps = pow(10, -precision);
     if (precision == 0) eps = 0.01;
+    while (fabs(element_1 - element) > eps) {
+        element = element_1;
+        //++n;
+        element_1 = pow(1 + (1./n), n);
+        n*=2;
+    }
+    return element_1;
+}
+
+double pi_lim(int precision){ 
+    double element;
+    if (precision < 0) {
+        element = NAN;
+    }
+    long int n = 1;
+    element = 4.0;
+    double element_next =  (pow(2*2*2, 4)/(2. * 24. * 24.));
+    double eps = pow(10, -precision);
+    if (precision == 0) eps = 0.001;
     while (fabs(element_next - element) > eps) {
         element = element_next;
         ++n;
-        element_next = pow(1 + (1./(n + 1)), (n + 1));
+        element_next = element * ((4. * n * (n + 1))/((2. * n + 1) * (2. * n + 1)));
     }
-    return element;
+    return element_next;
 }
 
-double ln2_lim(int precision){ //что-то не так?
+double ln2_lim(int precision){ 
     double element;
     if (precision < 0) {
         element = NAN;
     }
     long int n = 1;
     element = n * (pow(2, 1./n) - 1);
-    double element_next =  (n + 1) * (pow(2, 1./(n + 1)) - 1);
+    double element_1 =  (n + 1) * (pow(2, 1./(n + 1)) - 1);
+    double eps = pow(10, -precision);
+    if (precision == 0) eps = 0.01;
+    while (fabs(element_1 - element) > eps) {
+        element = element_1;
+        element_1 = n * (pow(2, 1./n) - 1);
+        n*=2;
+    }
+    return element_1;
+}
+
+double sqrt2_lim(int precision){ 
+    double element;
+    if (precision < 0) {
+        element = NAN;
+    }
+    long int n = 1;
+    element = - 0.5;
+    double element_next =  element - (element * element)/2. + 1.;
     double eps = pow(10, -precision);
     if (precision == 0) eps = 0.01;
     while (fabs(element_next - element) > eps) {
+        if (n > 50) break;
         element = element_next;
+        element_next = element - (element * element)/2. + 1.;
         ++n;
-        element_next = (n + 1) * (pow(2, 1./(n + 1)) - 1);
     }
-    return element;
+    return element_next;
 }
 
-
+double gamma_lim(int precision){ //вот здесь остановилась
+    double element;
+    if (precision < 0) {
+        element = NAN;
+    }
+    long int n = 1;
+    element = n * (pow(2, 1./n) - 1);
+    double element_1 =  (n + 1) * (pow(2, 1./(n + 1)) - 1);
+    double eps = pow(10, -precision);
+    if (precision == 0) eps = 0.01;
+    while (fabs(element_1 - element) > eps) {
+        element = element_1;
+        element_1 = n * (pow(2, 1./n) - 1);
+        n*=2;
+    }
+    return element_1;
+}
 
 double e_row(int precision) {
     double res = 0.0;
@@ -56,9 +110,9 @@ double e_row(int precision) {
     double eps = pow(10, -precision);
     if (precision == 0) eps = 0.49;
     while(fabs(element) > eps) {
-    ++n;
-    res = res + element;
-    element = element * (1./n);
+        ++n;
+        res = res + element;
+        element = element * (1./n);
     }
     return res;
 }
@@ -68,22 +122,21 @@ double pi_row(int precision) {
     if (precision < 0) {
         res = NAN;
     }
-    int n = 1;
+    int long long n = 1;
     double flag = 1;
-    double element = 1.0;
+    double element = 4.0;
     double eps = pow(10, -precision);
     if (precision == 0) eps = 0.01;
-    while(fabs(element) > eps) {
-    ++n; 
-    flag = 1;
-    if (n % 2 == 0) {
+    while((fabs(element) > eps) && (n < INT_MAX)) {
+        ++n;
         flag = -1;
+        if (n & 1) {
+            flag = 1;
+        }
+        res = res + element;
+        element = 4 * (flag/(2 * n - 1));
     }
-    res = res + element;
-    element = flag/(2 * n - 1);
-    if (n == INT_MAX) break;
-    }
-    return res*4;
+    return res;
 }
 
 double ln2_row(int precision) {
@@ -97,14 +150,34 @@ double ln2_row(int precision) {
     double eps = pow(10, -precision);
     if (precision == 0) eps = 0.01;
     while(fabs(element) > eps) {
-    ++n; 
-    flag = 1;
-    if (n % 2 == 0) {
-        flag = -1;
+        ++n; 
+        flag = 1;
+        if (n % 2 == 0) {
+         flag = -1;
+        }
+        res = res + element;
+        element = flag/n;
+        if (n == INT_MAX) break;
     }
-    res = res + element;
-    element = flag/n;
-    if (n == INT_MAX) break;
+    return res;
+}
+
+double sqrt2_row(int precision) {
+    double res = 1.0;
+    if (precision < 0) {
+        res = NAN;
+    }
+    long long int n = 2;
+    double h_element = pow(2, -n);
+    double element = pow(2, h_element);
+    double eps = pow(10, -precision);
+    if (precision == 0) eps = 0.01;
+    while(fabs(element) > eps) {
+        if (n > 50) break;
+        ++n; 
+        res = res * element;
+        h_element = pow(2, -n);
+        element = pow(2, h_element);
     }
     return res;
 }
@@ -133,13 +206,24 @@ double f_ln2_pr(double x) {
     return exp(x);
 }
 
-double newton(double a, double b, double F(double), double Fpr(double), double eps) {
+double f_sqrt2(double x) {
+    return x * x - 2;
+}
+
+double f_sqrt2_pr(double x) {
+    return 2*x;
+}
+
+double newton(double a, double b, double F(double), double Fpr(double), double eps, int flag) {
     double x;
+    int n;
     if (b < a) x = -1;
     else {
         x=(a + b)/2.;
         while (fabs(F(x)/Fpr(x)) > eps)
-        {
+        {   
+            if ((flag == 0) && (n > 5)) break;
+            ++n;
             x = x - F(x)/Fpr(x);
         }
     }
@@ -148,34 +232,49 @@ double newton(double a, double b, double F(double), double Fpr(double), double e
 
 double e_equation(int precision) {
     double res;
+    int flag = 1;
     if (precision < 0) {
         res = NAN;
     }
     double eps = pow(10, -precision);
     if (precision == 0) eps = 0.01;
-    res = newton(0.1, 4.5, f_e, f_e_pr, eps);
+    res = newton(0.1, 4.5, f_e, f_e_pr, eps, flag);
     return res;
 }
 
 double pi_equation(int precision) {
     double res;
+    int flag = 1;
     if (precision < 0) {
         res = NAN;
     }
     double eps = pow(10, -precision);
     if (precision == 0) eps = 0.01;
-    res = newton(0.1, 4.5, f_pi, f_pi_pr, eps);
+    res = newton(0.1, 4.5, f_pi, f_pi_pr, eps, flag);
     return res;
 }
 
 double ln2_equation(int precision) {
     double res;
+    int flag = 1;
     if (precision < 0) {
         res = NAN;
     }
     double eps = pow(10, -precision);
     if (precision == 0) eps = 0.01;
-    res = newton(0.1, 1.1, f_ln2, f_ln2_pr, eps);
+    res = newton(0.1, 1.1, f_ln2, f_ln2_pr, eps, flag);
+    return res;
+}
+
+double sqrt2_equation(int precision) {
+    double res;
+    int flag = 0;
+    if (precision < 0) {
+        res = NAN;
+    }
+    double eps = pow(10, -precision);
+    if (precision == 0) eps = 0.01;
+    res = newton(0.6, 2.1, f_sqrt2, f_sqrt2_pr, eps, flag);
     return res;
 }
 
@@ -200,7 +299,7 @@ int main() {
             return negative_precision;
         }
         printf("e = %.*lf\n", precision, res);
-       // printf("e = %.*lf\n", precision, exp(1));
+        printf("e = %.*lf\n", precision, exp(1));
     }
     if (choice == 2) {
         res = e_row(precision);
@@ -225,7 +324,13 @@ int main() {
         printf("e = %.*lf\n", precision, res);
     }
     if (choice == 4) {
-        
+        res = pi_lim(precision);
+        if (isnan(res) != 0) {
+            printf("Enter positive precision\n");
+            return negative_precision;
+        }
+        printf("pi = %.*lf\n", precision, res);
+        printf("pi = %.*lf\n", precision, M_PI);
     }
     if (choice == 5) {
         res = pi_row(precision);
@@ -283,13 +388,36 @@ int main() {
         printf("ln2 = %.*lf\n", precision, log(2));
     }
     if (choice == 10) {
-        
+        res = sqrt2_lim(precision);
+        if (isnan(res) != 0) {
+            printf("Enter positive precision\n");
+            return negative_precision;
+        }
+        printf("sqrt2 = %.*lf\n", precision, res);
+        printf("sqrt2 = %.*lf\n", precision, sqrt(2));
     }
     if (choice == 11) {
-        
+        res = sqrt2_row(precision);
+        if (isnan(res) != 0) {
+            printf("Enter positive precision\n");
+            return negative_precision;
+        }
+        printf("sqrt2 = %.*lf\n", precision, res);
+        printf("sqrt2 = %.*lf\n", precision, sqrt(2));
     }
     if (choice == 12) {
-        
+        res = sqrt2_equation(precision);
+        if (isnan(res) != 0) {
+            printf("Enter positive precision\n");
+            return negative_precision;
+        }
+        double eps = 0.00001;
+        if (fabs(res - 1) < eps) {
+            printf("Segment boundaries are not in the correct order\n");
+            return the_borders_are_not_in_that_order; 
+        } 
+        printf("sqrt2 = %.*lf\n", precision, res);
+        printf("sqrt2 = %.*lf\n", precision, sqrt(2));
     }
     if (choice == 13) {
         
