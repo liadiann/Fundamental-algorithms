@@ -56,15 +56,13 @@ void sum(int n) {
     printf("sum = %llu\n", sum);
 }
 
-int factorial(int n) {
-    unsigned long long f = 1;
+double factorial(int n) {
+    double f = 1.0;
     for (int i = 1; i <= n; i++) {
-        if (n > 20) {
-            printf("Произошло переполнение\n");
-            return -1;
-        }else{
+        
             f = f * i;
-        }
+            
+
     }
     return f;
 }
@@ -150,12 +148,12 @@ int main(int argc, char* argv[])
         sum(n);
         break;
     case 6: ;
-        p = factorial(n);
-        if (p == -1) {
+        double f = factorial(n);
+        if (f == -1) {
             printf("Переполнение\n");
             return 1;
         }
-        printf("factorial = %llu\n", p);
+        printf("factorial = %.0lf\n", f);
         break;
     }
     return 0;

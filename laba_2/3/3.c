@@ -4,7 +4,6 @@
 #include <ctype.h>
 #define error_scanf 1
 #define negative_precision 2
-#define factorial_overflow -1
 #define negative_factorial -2
 #define the_borders_are_not_in_that_order -3
 
@@ -82,22 +81,96 @@ double sqrt2_lim(int precision){
     return element_next;
 }
 
+
+/*double C(int n, int k)
+{
+    if (k > n/2) k = n - k;
+    if (k == 0 || k == n)
+        return 1.0;
+    if (k == 1) 
+        return n;
+    //return C(n - 1, k - 1) * n / k;
+    return C(n - 1, k) +C(n-1, k-1);
+}*/
+
+
+double C(int n, int k)
+{
+    if (k == 0 || k == n)
+        return 1.0;
+    if (k == 1) 
+        return n;
+    double res = 1.0;
+    if (n - k > k)
+        k = n - k;
+    for(int i = k + 1; i <= n; i++) 
+        res = res * i;
+    for(int i = 1; i < (n-k+1); i++)
+        res = res/i;
+    return res;
+}
+
+double ln_factorial(int n) {
+    double res = 0.0;
+    double log_1;
+    for (int i = 2; i <= n; i++) {
+        log_1 = log(i);
+        res = res + log_1;
+    }
+    return res;
+}
+
+double element_gamma(int n) {
+    double res = 0.0;
+    double element;
+    int flag;
+    double ln;
+    for (int k = 1; k <= n; k++) {
+        flag = 1;
+        if (k & 1) flag = -1;
+       /* if (isnan(factorial(k))!= 0) {
+            res = NAN;
+            break;
+        }*/   
+        ln = ln_factorial(k);
+        element = C(n, k) *((double)flag/k) * ln;
+       // printf("element при %d= %.16lf\n", n, element);
+        res = res + element;
+       //printf("res = %.16lf\n", res);
+    }
+    //printf("res при %d = %.16lf\n", n, res);
+    return res;
+}
+
 double gamma_lim(int precision){ //вот здесь остановилась
     double element;
+    double element_1;
     if (precision < 0) {
         element = NAN;
+    }else{
+        long int n = 1;
+        element = element_gamma(n);
+    //printf("element = %.16lf\n", element);
+        element_1 =  element_gamma(n+1);
+   // printf("element_1 = %.16lf\n", element_1);
+        double eps = pow(10, -precision);
+        if (precision == 0) eps = 0.01;
+        while (fabs(element_1 - element) > eps) {
+           if (n > 48) break;
+            element = element_1;
+             //printf("element = %.16lf\n", element);
+      //  printf("n = %d\n", n);
+            element_1 = element_gamma(n);
+        //printf("element_1 = %16lf\n", element_1);
+            if (isnan(element) != 0 || isnan(element_1)!= 0) {
+                if (isnan(element)!= 0) element = element_1;
+            break;
+            }
+            ++n;
+            
+        }
     }
-    long int n = 1;
-    element = n * (pow(2, 1./n) - 1);
-    double element_1 =  (n + 1) * (pow(2, 1./(n + 1)) - 1);
-    double eps = pow(10, -precision);
-    if (precision == 0) eps = 0.01;
-    while (fabs(element_1 - element) > eps) {
-        element = element_1;
-        element_1 = n * (pow(2, 1./n) - 1);
-        n*=2;
-    }
-    return element_1;
+    return element;
 }
 
 double e_row(int precision) {
@@ -317,7 +390,7 @@ int main() {
             return negative_precision;
         }
         double eps = 0.00001;
-        if (fabs(res - 1) < eps) {
+        if (fabs(res + 1) < eps) {
             printf("Segment boundaries are not in the correct order\n");
             return the_borders_are_not_in_that_order; 
         } 
@@ -348,7 +421,7 @@ int main() {
             return negative_precision;
         }
         double eps = 0.00001;
-        if (fabs(res - 1) < eps) {
+        if (fabs(res + 1) < eps) {
             printf("Segment boundaries are not in the correct order\n");
             return the_borders_are_not_in_that_order; 
         } 
@@ -380,7 +453,7 @@ int main() {
             return negative_precision;
         }
         double eps = 0.00001;
-        if (fabs(res - 1) < eps) {
+        if (fabs(res + 1) < eps) {
             printf("Segment boundaries are not in the correct order\n");
             return the_borders_are_not_in_that_order; 
         } 
@@ -412,7 +485,7 @@ int main() {
             return negative_precision;
         }
         double eps = 0.00001;
-        if (fabs(res - 1) < eps) {
+        if (fabs(res + 1) < eps) {
             printf("Segment boundaries are not in the correct order\n");
             return the_borders_are_not_in_that_order; 
         } 
@@ -420,7 +493,17 @@ int main() {
         printf("sqrt2 = %.*lf\n", precision, sqrt(2));
     }
     if (choice == 13) {
-        
+        res = gamma_lim(precision);
+        if (isnan(res) != 0) {
+            printf("Enter positive precision\n");
+            return negative_precision;
+        }
+        double eps = 0.00001;
+        if (fabs(res + 1.0) < eps) {
+            printf("Factorial of a negative number \n");
+            return negative_factorial; 
+        } 
+        printf("gamma = %.*Lf\n", precision, res);
     }
     if (choice == 14) {
         
