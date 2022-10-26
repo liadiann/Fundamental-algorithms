@@ -8,7 +8,7 @@
 #define size 32
 #include <math.h>
 
-int convert(long number, int r, long* res, int* i, int* flag) {
+int convert(long number, int r, char* res, int* i, int* flag) {
     if ((long)number != number) {
         free(res);
         return incorrectly_entered_values;
@@ -19,7 +19,10 @@ int convert(long number, int r, long* res, int* i, int* flag) {
     }
     *i = 0;
     *flag = 1;
-    if (number == 0) *i = 1;
+    if (number == 0) {
+        res[*i] = 0+'0';
+        *i = 1;
+    }
     if (number < 0) {
         number = -number;
         *flag = -1;
@@ -28,25 +31,25 @@ int convert(long number, int r, long* res, int* i, int* flag) {
     int base_1 = base - 1;
     while (number) {
         if (number < base) {
-            res[*i] = number;
+            res[*i] = number < 10 ? number+'0' : number-10 + 'A';
         }else{
-            res[*i] = number & base_1;
+            int number_1 = number & base_1;
+            res[*i] = number_1 < 10 ? number_1+'0' : number_1 - 10 + 'A';
         }
         number = number >> r;
-        printf("number & r = %d\n", number & r);
         *i = *i + 1;
     }
     return success;
 }
 
-int print(long* res, int count, int flag) {
+int print(char* res, int count, int flag) {
     if (count <= 0) {
         free(res);
         return error;
     }
     if (flag == -1) printf("-");
     for (int i = count-1; i >= 0; i--) {
-        printf("%d", res[i]);
+        printf("%c", res[i]);
     }
     printf("\n");
     return success;
@@ -64,7 +67,7 @@ int main() {
         printf("Input error\n");
         return input_error;
     }
-    long* res = (long*)calloc(size, sizeof(long));
+    char* res = (char*)malloc(size*sizeof(char));
     if (res == NULL) {
         printf("Memory allocation error\n");
         return memory_allocation_error;
