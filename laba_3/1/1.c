@@ -6,7 +6,6 @@
 #define error -4
 #define success 0
 #define size 32
-#include <math.h>
 
 int convert(long number, int r, char* res, int* i, int* flag) {
     if ((long)number != number) {
@@ -27,7 +26,8 @@ int convert(long number, int r, char* res, int* i, int* flag) {
         number = -number;
         *flag = -1;
     }
-    int base = pow(2, r);
+    int base = 1;
+    for (int j = 0; j < r; j++) base = base*2;
     int base_1 = base - 1;
     while (number) {
         if (number < base) {
@@ -85,5 +85,6 @@ int main() {
         return error;
     }
     if (result == success) printf("The result was successfully printed\n");
+    free(res);
     return success;
 }
