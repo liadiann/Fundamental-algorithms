@@ -21,10 +21,10 @@ int addition(int number_1, int number_2) {
 int logarithm(int number, int r){
     if ((r < 1) || (r > 5)) return incorrectly_entered_values;
     if (((long long)number != number) || (number < 0)) return incorrectly_entered_values;
-    int start = 1, count = 1;
-    while(start < number){
+    int number_1 = 1, count = 1;
+    while(number_1 < number){
         count = addition(count, 1);
-        start = start << r;
+        number_1 = number_1 << r;
     }
     return count;
 }
@@ -116,7 +116,7 @@ int print(char* res, int count) {
 
 int main() {
     long number;
-    int  r;
+    int r;
     printf("Enter the number you want to convert: ");
     if (scanf("%d", &number) != 1) {
         printf("Input error\n");
