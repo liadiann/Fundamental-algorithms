@@ -110,7 +110,7 @@ int print(char* res, int count) {
         printf("%c", res[i]);
     }
     printf("\n");
-    free(res);
+    //free(res);
     return success;
 }
 
@@ -168,5 +168,6 @@ int main() {
         return memory_allocation_error;
     }
     if (result == success) printf("The result was successfully printed\n");
+    free(res);
     return success;
 }

@@ -101,7 +101,8 @@ int print_arr(int* arr, int length) {
     if (length < 0) return error; 
     for (int i = 0; i < length; i++) {
         printf("arr[%d] = %d\n", i, arr[i]);
-    } 
+    }
+    //free(arr);
     return success;
 }
 
