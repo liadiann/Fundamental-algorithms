@@ -109,8 +109,6 @@ void search_for_numbers_with_l_consecutive_digits_1(int k, int l, int* length, i
     }
 } 
 
-
-
 int print_arr(int* arr, int length) {
     if (length < 0) return error; 
     for (int i = 0; i < length; i++) {
