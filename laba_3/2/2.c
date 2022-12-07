@@ -35,66 +35,80 @@ void search_for_numbers_with_l_1(int k, int l, int* length, int** arr, int* flag
         if (*length == invalid_input) *flag = invalid_input;
         *arr = (int*)malloc(((*length) + 1)*sizeof(int));
         if (*arr == NULL) *flag = memory_allocation_error;
-        int upper_bound = (1 << k) - 1;
-        if (l == 0) (*arr)[ordinal] = 0;
-        else if (k == l) (*arr)[ordinal] = upper_bound;
         else{
-            for (int i = 1; i <upper_bound; i++) {
-                count = 0;
-                num = i;
-                while (num) {
-                    bit = num & 1;
-                    if (bit == 1) count+=1;
-                    num = num >> 1;
-                }
-                if (count == l) {
-                    (*arr)[ordinal] = i;
-                    ordinal+=1;
+            int upper_bound = (1 << k) - 1;
+            if (l == 0) (*arr)[ordinal] = 0;
+            else if (k == l) (*arr)[ordinal] = upper_bound;
+            else{
+                for (int i = 1; i <upper_bound; i++) {
+                    count = 0;
+                    num = i;
+                    while (num) {
+                        bit = num & 1;
+                        if (bit == 1) count+=1;
+                        num = num >> 1;
+                    }
+                    if (count == l) {
+                        (*arr)[ordinal] = i;
+                        ordinal+=1;
+                    }
                 }
             }
-        }
-    }
+        } 
+    }  
 }
 
 void search_for_numbers_with_l_consecutive_digits_1(int k, int l, int* length, int** arr, int* flag){
     *flag = 0;
     int count;
-    int num, bit, bit_pred, ordinal = 0, flag_x2, count_all_1;
+    int size;
+    *length = 0;
+    int upper_bound = (1 << k) - 1;
+    int lower_bound = (1 << l) - 1;
+    int num, bit, bit_pred, flag_x2;
     if ((k < 0) || (k < l) || (l < 0)) *flag = invalid_input;
     else if (k > 31) *flag = overflow;
     else{
-        *length = k - l + 1; 
-        *arr = (int*)malloc(((*length) + 1)*sizeof(int));
+        size = upper_bound - lower_bound - 1; 
+        *arr = (int*)malloc((size+1)*sizeof(int));
         if (*arr == NULL) *flag = memory_allocation_error;
-        int upper_bound = (1 << k) - 1;
-        if (l == 0) {
-            *length = 1;
-            (*arr)[ordinal] = 0;
-        }
-        else if (k == l) (*arr)[ordinal] = upper_bound;
         else{
-            for (int i = 1; i <upper_bound; i++) {
-                bit_pred = 0;
-                count_all_1 = 0;
-                count = 1;
-                num = i;
-                while (num) {
-                    bit = num & 1;
-                    if ((bit == 1) && (bit_pred == 1)) {
-                        count+=1;
+            if (l == 0) {
+                (*arr)[*length] = 0;
+                *length+=1;
+            }
+            else if (k == l) {
+                (*arr)[*length] = upper_bound;
+                *length+=1;
+            }else{
+                for (int i = lower_bound; i <upper_bound; i++) {
+                    flag_x2 = 1;
+                    bit_pred = 0;
+                    count = 1;
+                    num = i;
+                    while (num) {
+                        bit = num & 1;
+                        if ((bit == 1) && (bit_pred == 1)) {
+                            count+=1;
+                            flag_x2 = 1;
+                        }else{
+                            if (count != l) count = 1;
+                            flag_x2 = -1;
+                        }
+                        bit_pred = bit;
+                        if (count == l && flag_x2 ==-1) break;
+                        num = num >> 1;
                     }
-                    if (bit == 1) count_all_1+=1;
-                    bit_pred = bit;
-                    num = num >> 1;
-                }
-                if (count == l && count_all_1 == l) {
-                    (*arr)[ordinal] = i;
-                    ordinal+=1;
+                    if (count == l) {
+                        (*arr)[*length] = i;
+                        *length+=1;
+                    }
                 }
             }
         }
     }
-}
+} 
+
 
 
 int print_arr(int* arr, int length) {
@@ -102,7 +116,6 @@ int print_arr(int* arr, int length) {
     for (int i = 0; i < length; i++) {
         printf("arr[%d] = %d\n", i, arr[i]);
     }
-    //free(arr);
     return success;
 }
 
