@@ -147,6 +147,7 @@ int main() {
         return invalid_input;
     }
     int choice;
+    
     printf("Enter 1 or 2\n1. Implement a search function for all k-bit integers of type int, in the binary notation of which there are exactly l 1(l<=k)\n2. Implement a search function for all k-bit integers of type int, in the binary number system of which there are exactly l consecutive 1(l<=k)\n");
     if (scanf("%d", &choice) != 1) {
         printf("Invalid input\n");
