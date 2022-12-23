@@ -7,7 +7,7 @@
 #define error -4
 #define success 0
 
-double C(int n, int k)
+double combination(int n, int k)
 {
     if (n < 0 || k < 0) return invalid_input;
     if (k == 0 || k == n)
@@ -31,7 +31,7 @@ void search_for_numbers_with_l_1(int k, int l, int* length, int** arr, int* flag
     if ((k < 0) || (k < l) || (l < 0)) *flag = invalid_input;
     else if (k > 31) *flag = overflow;
     else{
-        *length = ceil(C(k, l));
+        *length = ceil(combination(k, l));
         if (*length == invalid_input) *flag = invalid_input;
         *arr = (int*)malloc(((*length) + 1)*sizeof(int));
         if (*arr == NULL) *flag = memory_allocation_error;
@@ -147,7 +147,7 @@ int main() {
         return invalid_input;
     }
     int choice;
-    printf("Enter 1 or 2\n1. Реализовать функцию поиска всех k-битных целых чисел типа int, в двоичной записи которых присутствует ровно l единиц(l<=k)\n2. Реализовать функцию поиска всех k-битных целых чисел типа int, в двоичной записи которых присутствует ровно l подряд идущих единиц(l<=k)\n");
+    printf("Enter 1 or 2\n1. Implement a search function for all k-bit integers of type int, in the binary notation of which there are exactly l 1(l<=k)\n2. Implement a search function for all k-bit integers of type int, in the binary number system of which there are exactly l consecutive 1(l<=k)\n");
     if (scanf("%d", &choice) != 1) {
         printf("Invalid input\n");
         return invalid_input;
