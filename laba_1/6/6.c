@@ -95,11 +95,17 @@ int main(int argc, char* argv[]){
     int res = min_numbers_systems_and_writing_to_a_file(fin, fout);
     if (res == memory_allocation_error) {
         printf("Memory allocation error\n");
+        fclose(fin);
+        fclose(fout);
         return memory_allocation_error;
     }
     if (res == error) {
         printf("Error!\n");
+        fclose(fin);
+        fclose(fout);
         return error;
     }
+    fclose(fin);
+    fclose(fout);
     return success;
 }
