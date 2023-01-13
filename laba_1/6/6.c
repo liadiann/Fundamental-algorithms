@@ -22,10 +22,10 @@
 int conversion_to_decimal_notation(char* number, int base, int size) {
     if (size < 0 || size == 0) return error;
     if (base < 2) return error; 
-    int n = 0, ind = size;
+    int n = 0, index = size;
     int tmp = 1;
-    while(ind-- != 0){
-        n += (isdigit(number[ind]) ? (number[ind] - '0') : (tolower(number[ind]) - 'a' + 10)) * tmp;
+    while(index-- != 0){
+        n += (isdigit(number[index]) ? (number[index] - '0') : (tolower(number[index]) - 'a' + 10)) * tmp;
         tmp *= base;
     }
     return n;
