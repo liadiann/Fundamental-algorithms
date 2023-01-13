@@ -32,9 +32,9 @@ int conversion_to_decimal_notation(char* number, int base, int size) {
 }
 
 int min_numbers_systems_and_writing_to_a_file(FILE* fin, FILE* fout) {
-    int base = 2, size = 0, number;
+    int base = 2, size = 0, number, flag = 1, i = 0;
     char c, _c = 0;
-    char* buf = (char*)malloc(length_number*sizeof(char));
+    char* buf = (char*)malloc((length_number+1)*sizeof(char));
     if (buf == NULL) {
         printf("Memory allocation\n");
         return memory_allocation_error;
@@ -45,6 +45,10 @@ int min_numbers_systems_and_writing_to_a_file(FILE* fin, FILE* fout) {
         if (isalnum(c)) {
             buf[size++] = c;
         }
+        if (c == '-' && i == 0) {
+            flag = -1;
+        }
+        i+=1;
         if (isdigit(c)) {
             if (base < c - '0') {
                 base = c -'0' + 1;
@@ -59,10 +63,15 @@ int min_numbers_systems_and_writing_to_a_file(FILE* fin, FILE* fout) {
             buf[size] = '\0';
             number = conversion_to_decimal_notation(buf, base, size);
             if (number == error) return error;
-            fprintf(fout, "%s   %d  %d\n", buf, base, number);
+            if (flag == -1){
+                fprintf(fout, "-%s   %d  -%d\n", buf, base, number);
+            }else{
+                fprintf(fout, "%s   %d  %d\n", buf, base, number);
+            }
             free(buf);
             base = 2;
             size = 0;
+            flag = 1;
             buf = (char*)malloc(length_number*sizeof(char));
             if (buf == NULL) {
                 printf("Memory allocation\n");
@@ -70,6 +79,7 @@ int min_numbers_systems_and_writing_to_a_file(FILE* fin, FILE* fout) {
             }
         }
         _c = c;
+        i = 0;
     }
     return success;
 }
