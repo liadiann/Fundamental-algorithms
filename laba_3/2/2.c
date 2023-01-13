@@ -58,6 +58,7 @@ void search_for_numbers_with_l_1(int k, int l, int* length, int** arr, int* flag
     }  
 }
 
+
 void search_for_numbers_with_l_consecutive_digits_1(int k, int l, int* length, int** arr, int* flag){
     *flag = 0;
     int count;
