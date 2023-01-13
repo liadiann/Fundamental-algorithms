@@ -70,7 +70,7 @@ void search_for_numbers_with_l_consecutive_digits_1(int k, int l, int* length, i
     else if (k > 31) *flag = overflow;
     else{
         size = upper_bound - lower_bound - 1; 
-        *arr = (int*)malloc((size+1)*sizeof(int));
+        *arr = (int*)malloc((size+2)*sizeof(int));
         if (*arr == NULL) *flag = memory_allocation_error;
         else{
             if (l == 0) {
@@ -176,6 +176,7 @@ int main() {
     res = print_arr(arr, length);
     if (res == error) {
         printf("Error\n");
+        free(arr);
         return error;
     }
     if (res == success) printf("The array was successfully printed\n");
