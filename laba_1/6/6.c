@@ -42,24 +42,24 @@ int min_numbers_systems_and_writing_to_a_file(FILE* fin, FILE* fout) {
     while(!feof(fin)){
         c = fgetc(fin);
         if (c == EOF) free(buf);
-        if (isalnum(c)) {
+        if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z')) {
             buf[size++] = c;
         }
         if (c == '-' && i == 0) {
             flag = -1;
         }
         i+=1;
-        if (isdigit(c)) {
+        if (c>= '0' && c <= '9') {
             if (base < c - '0') {
                 base = c -'0' + 1;
             }
         }
-        if (isalpha(c)){
+        if (c >= 'A' && c <= 'Z'){
             if (base < c - 'A' + 10) {
                 base = c - 'A' + 11;
             }
         }
-        if ((isalnum(_c)) && (c == ' ' || c == '\n' || c== '\t')) {
+        if (((_c >= '0' && _c <= '9') || (_c >= 'A' && _c <= 'Z')) && (c == ' ' || c == '\n' || c== '\t')) {
             buf[size] = '\0';
             number = conversion_to_decimal_notation(buf, base, size);
             if (number == error) return error;
