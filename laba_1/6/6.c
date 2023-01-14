@@ -74,7 +74,6 @@ int min_numbers_systems_and_writing_to_a_file(FILE* fin, FILE* fout) {
             flag = 1;
             buf = (char*)malloc(length_number*sizeof(char));
             if (buf == NULL) {
-                printf("Memory allocation\n");
                 return memory_allocation_error;
             }
         }
