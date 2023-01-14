@@ -25,7 +25,7 @@ int conversion_to_decimal_notation(char* number, int base, int size) {
     int n = 0, index = size;
     int tmp = 1;
     while(index-- != 0){
-        n += (isdigit(number[index]) ? (number[index] - '0') : (number[index] - 'A' + 10)) * tmp;
+        n += (number[index]>= '0' && number[index] <= '9' ? (number[index] - '0') : (number[index] - 'A' + 10)) * tmp;
         tmp *= base;
     }
     return n;
