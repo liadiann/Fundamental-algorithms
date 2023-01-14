@@ -25,7 +25,7 @@ int conversion_to_decimal_notation(char* number, int base, int size) {
     int n = 0, index = size;
     int tmp = 1;
     while(index-- != 0){
-        n += (isdigit(number[index]) ? (number[index] - '0') : (tolower(number[index]) - 'a' + 10)) * tmp;
+        n += (isdigit(number[index]) ? (number[index] - '0') : (number[index] - 'A' + 10)) * tmp;
         tmp *= base;
     }
     return n;
@@ -55,8 +55,8 @@ int min_numbers_systems_and_writing_to_a_file(FILE* fin, FILE* fout) {
             }
         }
         if (isalpha(c)){
-            if (base < tolower(c) - 'a' + 10) {
-                base = tolower(c) - 'a' + 11;
+            if (base < c - 'A' + 10) {
+                base = c - 'A' + 11;
             }
         }
         if ((isalnum(_c)) && (c == ' ' || c == '\n' || c== '\t')) {
