@@ -84,7 +84,6 @@ int min_numbers_systems_and_writing_to_a_file(FILE* fin, FILE* fout) {
     return success;
 }
 
-
 int main(int argc, char* argv[]){
     if (argc != 2) {
         printf("Usage: program file_name\n");
